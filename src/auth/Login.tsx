@@ -1,95 +1,86 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
-  });
-
-  const handleInputChange = (field: keyof LoginFormData, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add form validation and API call
-    console.log('Login data:', formData);
-    // After successful login, you can use:
-    // const navigate = useNavigate();
-    // navigate('/home');
+    // Add login logic here
+    console.log('Login attempted with:', { email, password });
   };
 
   const handleForgotPassword = () => {
-    // TODO: Implement forgot password flow
-    console.log('Forgot password clicked');
-    // navigate('/forgot-password');
+    // Add forgot password navigation logic here
+    navigate('/reset-password');
+  };
+
+  const handleCreateAccount = () => {
+    // Add create account navigation logic here
+    navigate('/signup'); // Adjust route as needed
   };
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-white justify-between overflow-x-hidden font-['Manrope','Noto_Sans',sans-serif]">
+    <div
+      className="relative flex h-auto min-h-screen w-full flex-col bg-[#f8fbfc] justify-between group/design-root overflow-x-hidden"
+      style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
+    >
       {/* Main Content */}
       <div className="flex-1">
-        {/* Header */}
-        <h2 className="text-[#111418] tracking-tight text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
-          Welcome back
-        </h2>
+        {/* Welcome Header */}
+        <h3 className="text-[#0d191c] tracking-light text-2xl font-bold leading-tight px-4 text-left pb-2 pt-5">
+          Welcome back, scholar 👋🏾
+        </h3>
 
-        <form onSubmit={handleLogin}>
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="flex flex-col">
           {/* Email Input */}
-          <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3 mx-auto">
+          <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
             <label className="flex flex-col flex-1 min-w-40">
               <input
                 type="email"
                 placeholder="Email"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] focus:outline-0 focus:ring-0 border-none bg-[#f0f2f4] focus:border-none h-14 placeholder:text-[#617589] p-4 text-base font-normal leading-normal focus:bg-[#e8eaed] transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d191c] focus:outline-0 focus:ring-0 border-none bg-[#e7f1f4] focus:border-none h-14 placeholder:text-[#498a9c] p-4 text-base font-normal leading-normal focus:bg-[#dde9ec] transition-colors"
                 required
               />
             </label>
           </div>
 
           {/* Password Input */}
-          <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3 mx-auto">
+          <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
             <label className="flex flex-col flex-1 min-w-40">
               <input
                 type="password"
                 placeholder="Password"
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] focus:outline-0 focus:ring-0 border-none bg-[#f0f2f4] focus:border-none h-14 placeholder:text-[#617589] p-4 text-base font-normal leading-normal focus:bg-[#e8eaed] transition-colors"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d191c] focus:outline-0 focus:ring-0 border-none bg-[#e7f1f4] focus:border-none h-14 placeholder:text-[#498a9c] p-4 text-base font-normal leading-normal focus:bg-[#dde9ec] transition-colors"
                 required
               />
             </label>
           </div>
 
           {/* Forgot Password */}
-          <div className="flex justify-center px-4 py-2">
-            <button
-              type="button"
-              onClick={handleForgotPassword}
-              className="text-[#617589] text-sm font-normal leading-normal underline hover:text-[#1172d4] transition-colors"
-            >
-              Forgot Password?
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-[#498a9c] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline hover:text-[#0ba9d5] transition-colors text-left w-fit"
+          >
+            Forgot Password?
+          </button>
 
           {/* Login Button */}
           <div className="flex px-4 py-3">
             <button
               type="submit"
-              className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-[#1172d4] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 transition-colors duration-200 mx-auto"
+              className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#0ba9d5] text-[#f8fbfc] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#0a95c0] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!email || !password}
             >
-              <span className="truncate">Log In</span>
+              <span className="truncate">Login</span>
             </button>
           </div>
         </form>
@@ -97,13 +88,13 @@ const Login: React.FC = () => {
 
       {/* Footer */}
       <div>
-        <p className="text-[#617589] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">
-          Don't have an account?{' '}
-          <Link to="/signup" className="underline hover:text-[#1172d4] transition-colors">
-            Sign Up
-          </Link>
-        </p>
-        <div className="h-5 bg-white"></div>
+        <button
+          onClick={handleCreateAccount}
+          className="text-[#498a9c] text-sm font-normal  leading-normal pb-3 pt-1 px-4 text-center underline hover:text-[#0ba9d5] transition-colors w-full"
+        >
+          Don't have an account? Create Account
+        </button>
+        <div className="h-5 bg-[#f8fbfc]"></div>
       </div>
     </div>
   );
