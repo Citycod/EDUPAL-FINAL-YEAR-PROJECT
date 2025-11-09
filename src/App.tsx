@@ -12,8 +12,8 @@ import ClassesPage from './pages/ClassesPage';
 import CommunityPage from './pages/CommunityPage';
 import CommunityPostDetail from './pages/CommunityPostDetail';
 // import Search from './pages/main/Search';
-// import Profile from './pages/main/Profile';
-// import Notifications from './pages/main/Notifications';
+ import ProfilePage from './pages/ProfilePage';
+ import Notifications from './pages/Notifications';
 // import Settings from './pages/main/Settings';
 
 const App: React.FC = () => {
@@ -35,12 +35,13 @@ const App: React.FC = () => {
             <Route path="/study" element={<StudyResources />} />
             <Route path="/resource/:id" element={<ResourceDetail />} />
             <Route path="/classes" element={<ClassesPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/community-detail" element={<CommunityPostDetail />} />
-            
+ <Route path="/community" element={<CommunityPage />} />
+        <Route path="/community/:postId" element={<CommunityPostDetail />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/notification" element={<Notifications />} />
             {/* <Route path="/search" element={<Search />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/notifications" element={<Notifications />} />
+            
+            
             <Route path="/settings" element={<Settings />} /> */}
           </Routes>
         </div>

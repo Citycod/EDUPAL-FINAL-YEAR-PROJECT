@@ -79,7 +79,7 @@ const navItems = [
 
   const handleNotificationClick = () => {
     // Add notification logic here
-    console.log('Notification bell clicked');
+       navigate('/notification');
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

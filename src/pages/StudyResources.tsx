@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import UploadMaterialModal from '../pages/UploadMaterialModal'; // Import the modal
+import UploadMaterialModal from '../pages/UploadMaterialModal';
 
 interface StudyResource {
   id: number;
@@ -24,12 +23,7 @@ interface UploadData {
 const StudyResources: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false); // Modal state
-  const [selectedFilters, setSelectedFilters] = useState({
-    course: '',
-    department: '',
-    year: ''
-  });
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const studyResources: StudyResource[] = [
     {
@@ -39,7 +33,20 @@ const StudyResources: React.FC = () => {
       uploadedBy: "Alex",
       image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwGK051C7lPu2XgK_r8y1G-BEki81m6jIJCB6ITOhnhtRAjKtMo2YwwNA5zw1sJzdX0PBPuK58q3i7RaFe1xXbxms3y6M1dYynnP9Y9_bm0-lsvPFQvwM0Pv7lzxt3DGNDIBHKGyqd744WHBAfU2_aDGbJ2-Hcld5wUHqspAYqEDbs220YotzMAlwg_VryoSDuTQ0sVQRW68HMiORxD5VRnlryhERQWtSjYoShAbD8NGSchKaXwcukhGk8S3nmHrKV9LJVE40oRJY"
     },
-    // ... other resources
+    {
+      id: 2,
+      title: "Advanced Calculus Notes",
+      type: "PDF",
+      uploadedBy: "Sarah",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwGK051C7lPu2XgK_r8y1G-BEki81m6jIJCB6ITOhnhtRAjKtMo2YwwNA5zw1sJzdX0PBPuK58q3i7RaFe1xXbxms3y6M1dYynnP9Y9_bm0-lsvPFQvwM0Pv7lzxt3DGNDIBHKGyqd744WHBAfU2_aDGbJ2-Hcld5wUHqspAYqEDbs220YotzMAlwg_VryoSDuTQ0sVQRW68HMiORxD5VRnlryhERQWtSjYoShAbD8NGSchKaXwcukhGk8S3nmHrKV9LJVE40oRJY"
+    },
+    {
+      id: 3,
+      title: "Computer Science Lab Manual",
+      type: "DOC",
+      uploadedBy: "Mike",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwGK051C7lPu2XgK_r8y1G-BEki81m6jIJCB6ITOhnhtRAjKtMo2YwwNA5zw1sJzdX0PBPuK58q3i7RaFe1xXbxms3y6M1dYynnP9Y9_bm0-lsvPFQvwM0Pv7lzxt3DGNDIBHKGyqd744WHBAfU2_aDGbJ2-Hcld5wUHqspAYqEDbs220YotzMAlwg_VryoSDuTQ0sVQRW68HMiORxD5VRnlryhERQWtSjYoShAbD8NGSchKaXwcukhGk8S3nmHrKV9LJVE40oRJY"
+    }
   ];
 
   const navItems = [
@@ -76,18 +83,17 @@ const StudyResources: React.FC = () => {
   ];
 
   const handleAddResource = () => {
-    setIsUploadModalOpen(true); // Open the modal
+    setIsUploadModalOpen(true);
   };
 
   const handleUploadSubmit = (uploadData: UploadData) => {
     console.log('Upload data:', uploadData);
     // Handle the upload logic here (API call, etc.)
-    // You can add your upload logic here
-    setIsUploadModalOpen(false); // Close modal after submit
+    setIsUploadModalOpen(false);
   };
 
   const handleUploadClose = () => {
-    setIsUploadModalOpen(false); // Close modal
+    setIsUploadModalOpen(false);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,13 +101,19 @@ const StudyResources: React.FC = () => {
   };
 
   const handleFilterClick = (filterType: string) => {
-    // Filter logic would go here
     console.log(`Filter by ${filterType} clicked`);
   };
 
   const handleResourceClick = (resourceId: number) => {
     navigate(`/resource/${resourceId}`);
   };
+
+  // Filter resources based on search query
+  const filteredResources = studyResources.filter(resource =>
+    resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.uploadedBy.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.type.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div 
@@ -138,7 +150,7 @@ const StudyResources: React.FC = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex gap-3 p-3 overflow-x-hidden">
+        <div className="flex gap-3 p-3 overflow-x-auto">
           <button 
             onClick={() => handleFilterClick('course')}
             className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#e7f1f4] pl-4 pr-2 hover:bg-[#dde9ec] transition-colors"
@@ -176,30 +188,43 @@ const StudyResources: React.FC = () => {
 
         {/* Resources List */}
         <div className="flex-1">
-          {studyResources.map((resource) => (
-            <div 
-              key={resource.id} 
-              className="p-4 cursor-pointer hover:bg-[#f0f7f9] transition-colors"
-              onClick={() => handleResourceClick(resource.id)}
-            >
-              <div className="flex items-stretch justify-between gap-4 rounded-xl">
-                <div className="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p className="text-[#0d191c] text-base font-bold leading-tight">{resource.title}</p>
-                  <p className="text-[#498a9c] text-sm font-normal leading-normal">
-                    {resource.type} · Uploaded by {resource.uploadedBy}
-                  </p>
-                </div>
-                <div
-                  className="flex-1 w-full transition-shadow bg-center bg-no-repeat bg-cover shadow-md aspect-video rounded-xl hover:shadow-lg"
-                  style={{ backgroundImage: `url("${resource.image}")` }}
-                />
+          {filteredResources.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 px-4">
+              <div className="text-[#498a9c] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64px" height="64px" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M216,40H40A16,16,0,0,0,24,56V184a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,144H40V56H216V184ZM184,88a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,88Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,120Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,152Z" />
+                </svg>
               </div>
+              <p className="text-[#498a9c] text-lg font-medium text-center">
+                No resources found matching your search
+              </p>
             </div>
-          ))}
+          ) : (
+            filteredResources.map((resource) => (
+              <div 
+                key={resource.id} 
+                className="p-4 cursor-pointer hover:bg-[#f0f7f9] transition-colors border-b border-[#e7f1f4]"
+                onClick={() => handleResourceClick(resource.id)}
+              >
+                <div className="flex items-stretch justify-between gap-4 rounded-xl">
+                  <div className="flex flex-col gap-1 flex-[2_2_0px]">
+                    <p className="text-[#0d191c] text-base font-bold leading-tight">{resource.title}</p>
+                    <p className="text-[#498a9c] text-sm font-normal leading-normal">
+                      {resource.type} · Uploaded by {resource.uploadedBy}
+                    </p>
+                  </div>
+                  <div
+                    className="flex-1 w-full transition-shadow bg-center bg-no-repeat bg-cover shadow-md aspect-video rounded-xl hover:shadow-lg min-w-[100px] max-w-[120px]"
+                    style={{ backgroundImage: `url("${resource.image}")` }}
+                  />
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Add Resource Floating Button */}
-        <div className="flex justify-end px-5 pb-5 overflow-hidden">
+        <div className="flex justify-end px-5 pb-5 overflow-hidden sticky bottom-24">
           <button
             onClick={handleAddResource}
             className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-[#0ba9d5] text-[#f8fbfc] text-base font-bold leading-normal tracking-[0.015em] min-w-0 gap-4 pl-4 pr-6 hover:bg-[#0a95c0] transition-colors shadow-lg hover:shadow-xl"
